@@ -1,0 +1,15 @@
+---
+keys:
+  - &user age19tzv60wpe9687x6ymat9vv9jra8zwxctr9wfkk7sfg3y0nhtlagq7yh5tg
+
+creation_rules:
+  - path_regex: kubernetes/.*\.sops\.ya?ml$
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - *user
+
+  - path_regex: .*\.sops\.ya?ml$
+    key_groups:
+      - age:
+          - *user
