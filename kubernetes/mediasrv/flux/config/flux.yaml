@@ -25,3 +25,54 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: flux-manifests
+  patches:
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: not-used
+        spec:
+          template:
+            spec:
+              containers:
+                - name: manager
+                  resources:
+                    limits:
+                      memory: 128Mi
+      target:
+        kind: Deployment
+        name: "(source-controller|helm-controller)"
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: not-used
+        spec:
+          template:
+            spec:
+              containers:
+                - name: manager
+                  resources:
+                    limits:
+                      memory: 256Mi
+      target:
+        kind: Deployment
+        name: "kustomize-controller"
+
+    - patch: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: not-used
+        spec:
+          template:
+            spec:
+              containers:
+                - name: manager
+                  resources:
+                    limits:
+                      memory: 64Mi
+      target:
+        kind: Deployment
+        name: "notification-controller"
