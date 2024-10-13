@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openebs
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: openebs
+      version: 4.1.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: openebs
+        namespace: flux-system
+  values:
+    localpv-provisioner:
+      hostpathClass:
+        enabled: false
+
+    lvm-localpv:
+      # MicroK8s-specific configuration
+      lvmNode:
+        kubeletDir: /var/snap/microk8s/common/var/lib/kubelet/
+    
+    engines:
+      local:
+        lvm:
+          enabled: true
+        zfs:
+          enabled: false
+      replicated:
+        mayastor:
+          enabled: false
