@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+clusterName: ${clusterName}
+endpoint: "https://${clusterEndpointIP}:6443"
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+talosVersion: v1.8.1
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.31.1
+
+allowSchedulingOnControlPlanes: true
+
+additionalApiServerCertSans: &san
+  - ${clusterName}.${clusterDNSSuffix}
+  - "127.0.0.1" # KubePrism
+additionalMachineCertSans: *san
+
+nodes:
+- hostname: brain.test-cluster.local
+  ipAddress: 10.1.1.5
+  controlPlane: true
+  installDisk: /dev/sda
+  networkInterfaces:
+    - deviceSelector:
+        physical: true
+      addresses:
+        - 10.1.1.5/24
+      routes:
+        - network: 0.0.0.0/0
+          gateway: 10.1.1.1
+      vip:
+        ip: ${clusterEndpointIP}
+
+controlPlane:
+  patches:
+    - |-
+      machine:
+        kubelet:
+          nodeIP:
+            validSubnets:
+                - 10.1.1.0/24
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 10.1.1.0/24

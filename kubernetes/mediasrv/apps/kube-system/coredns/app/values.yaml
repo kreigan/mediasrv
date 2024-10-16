@@ -1,0 +1,75 @@
+---
+fullnameOverride: coredns
+replicaCount: 3
+k8sAppLabelOverride: kube-dns
+serviceAccount:
+  create: true
+service:
+  name: kube-dns
+  clusterIP: 10.96.0.10
+servers:
+  - zones:
+      - zone: .
+        scheme: dns://
+        use_tcp: true
+    port: 53
+    plugins:
+      # error logging
+      - name: errors
+
+      # health check endpoint
+      - name: health
+        configBlock: |-
+          lameduck 5s
+
+      # readiness check HTTP endpoint
+      - name: ready
+
+      # query logging to standard output
+      - name: log
+        configBlock: |-
+          class error
+
+      # read zone data from the cluster
+      - name: kubernetes
+        parameters: cluster.local in-addr.arpa ip6.arpa
+        configBlock: |-
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+
+      # proxy DNS messages to upstream resolvers
+      - name: forward
+        parameters: . /etc/resolv.conf
+
+      # cache DNS responses
+      - name: cache
+        parameters: 30
+
+      # detect simple forwarding loops and halt the server
+      - name: loop
+
+      # automatic reload of a changed Corefile
+      - name: reload
+
+      # randomize the order of A, AAAA and MX records
+      - name: loadbalance
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: coredns

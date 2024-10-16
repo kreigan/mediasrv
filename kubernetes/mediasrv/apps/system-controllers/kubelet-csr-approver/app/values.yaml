@@ -1,0 +1,4 @@
+---
+providerRegex: |
+  ^(ruby)$
+bypassDnsResolution: true

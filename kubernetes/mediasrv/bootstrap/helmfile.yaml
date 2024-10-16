@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+helmDefaults:
+  wait: true
+  waitForJobs: true
+  timeout: 600
+  recreatePods: true
+  force: true
+
+repositories:
+  - name: postfinance
+    url: https://postfinance.github.io/kubelet-csr-approver
+  - name: cilium
+    url: https://helm.cilium.io
+  - name: coredns
+    url: https://coredns.github.io/helm
+
+releases:
+  - name: cilium
+    namespace: kube-system
+    chart: cilium/cilium
+    version: 1.16.2
+    values:
+      - ../apps/kube-system/cilium/app/values.yaml
+
+  - name: coredns
+    namespace: kube-system
+    chart: coredns/coredns
+    version: 1.36.0
+    values:
+      - ../apps/kube-system/coredns/app/values.yaml
+    needs:
+      - kube-system/cilium
+
+  - name: kubelet-csr-approver
+    namespace: system-controllers
+    chart: postfinance/kubelet-csr-approver
+    version: 1.2.2
+    values:
+      - ../apps/system-controllers/kubelet-csr-approver/app/values.yaml
+    needs:
+      - kube-system/cilium
+      - kube-system/coredns
