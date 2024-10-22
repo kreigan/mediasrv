@@ -19,6 +19,12 @@ nodes:
   ipAddress: 10.1.1.5
   controlPlane: true
   installDisk: /dev/sda
+  machineDisks:
+    - device: /dev/disk/by-id/scsi-360022480777a0140e2eb570c1a64be3d
+      partitions:
+        - mountpoint: /var/mnt/media
+          size: 7 GiB
+        - mountpoint: /var/mnt/data
   networkInterfaces:
     - deviceSelector:
         physical: true
