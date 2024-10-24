@@ -24,6 +24,12 @@ nodes:
     controlPlane: true
     installDiskSelector:
       type: "nvme"
+    machineDisks:
+      - device: /dev/disk/by-id/wwn-0x5000c500e920889b
+        partitions:
+          - mountpoint: /var/mnt/data
+            size: 536869863424
+          - mountpoint: /var/mnt/media
     networkInterfaces:
       - deviceSelector:
           physical: true
