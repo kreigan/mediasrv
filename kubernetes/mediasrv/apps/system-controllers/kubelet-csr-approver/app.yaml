@@ -12,9 +12,9 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/main/apps/system-controllers/kubelet-csr-approver/app"
+  path: "./kubernetes/mediasrv/apps/system-controllers/kubelet-csr-approver/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: mediasrv-kubernetes
   wait: true
