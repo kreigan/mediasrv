@@ -7,6 +7,7 @@ resources:
   - angelnu.yaml
   - backube.yaml
   - bjw-s.yaml
+  - cilium.yaml
   - coredns.yaml
   - external-secrets.yaml
   - grafana.yaml
