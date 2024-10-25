@@ -1,0 +1,14 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: service-pool
+  namespace: kube-system
+spec:
+  addresses:
+  - 192.168.21.160-192.168.21.195
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: service-l2
+  namespace: kube-system
