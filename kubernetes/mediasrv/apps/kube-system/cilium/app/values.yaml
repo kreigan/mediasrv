@@ -29,6 +29,8 @@ k8sServicePort: 7445
 
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  enabled: true
 localRedirectPolicy: true
 
 operator:
@@ -36,7 +38,6 @@ operator:
   replicas: 1
 
 rollOutCiliumPods: true
-routingMode: native
 
 securityContext:
   capabilities:
