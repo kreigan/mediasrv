@@ -38,6 +38,7 @@ operator:
   replicas: 1
 
 rollOutCiliumPods: true
+routingMode: native
 
 securityContext:
   capabilities:
