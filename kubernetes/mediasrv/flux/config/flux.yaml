@@ -38,7 +38,7 @@ spec:
                 - name: manager
                   resources:
                     limits:
-                      memory: 128Mi
+                      memory: 256Mi
       target:
         kind: Deployment
         name: "(source-controller|helm-controller)"
@@ -55,7 +55,7 @@ spec:
                 - name: manager
                   resources:
                     limits:
-                      memory: 256Mi
+                      memory: 512Mi
       target:
         kind: Deployment
         name: "kustomize-controller"
@@ -72,7 +72,7 @@ spec:
                 - name: manager
                   resources:
                     limits:
-                      memory: 64Mi
+                      memory: 128Mi
       target:
         kind: Deployment
         name: "notification-controller"
