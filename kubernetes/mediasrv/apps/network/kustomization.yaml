@@ -6,5 +6,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./cloudflared/app.yaml
   - ./external-dns/app.yaml
   - ./ingress-nginx/app.yaml
