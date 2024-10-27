@@ -1,36 +1,17 @@
 ---
-autoDirectNodeRoutes: true
-
-bandwidthManager:
-  bbr: true
-  enabled: true
-
-bpf:
-  masquerade: true
-  tproxy: true
-
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-cni:
-  exclusive: false
-
-endpointRoutes:
-  enabled: true
-
-envoy:
-  enabled: false
-
-ipv4NativeRoutingCIDR: 10.244.0.0/16
-k8sServiceHost: 127.0.0.1
-k8sServicePort: 7445
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 kubeProxyReplacement: true
-kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
 l2announcements:
   enabled: true
+
 localRedirectPolicy: true
 
 operator:
@@ -38,7 +19,6 @@ operator:
   replicas: 1
 
 rollOutCiliumPods: true
-routingMode: native
 
 securityContext:
   capabilities:
