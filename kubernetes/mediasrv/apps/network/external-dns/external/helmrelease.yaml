@@ -48,6 +48,7 @@ spec:
     sources:
       - ingress
       - crd
+      - service
     txtOwnerId: mediasrv
     txtPrefix: "k8s."
     logLevel: debug
