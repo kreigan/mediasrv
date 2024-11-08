@@ -51,7 +51,6 @@ spec:
       - service
     txtOwnerId: mediasrv
     txtPrefix: "k8s."
-    logLevel: debug
 
   postRenderers:
     - kustomize:
