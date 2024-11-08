@@ -28,7 +28,6 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "ingress-ext.kreigan.com"
           lbipam.cilium.io/ips: "192.168.21.172"
 
       publishService:
