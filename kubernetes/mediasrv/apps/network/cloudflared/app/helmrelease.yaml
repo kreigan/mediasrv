@@ -38,17 +38,20 @@ spec:
           app:
             image:
               repository: docker.io/cloudflare/cloudflared
-              tag: 2024.10.1
-            args:
+              tag: 2024.11.0
+            command:
+              - cloudflared
               - tunnel
-              - --config
-              - /etc/cloudflared/config/config.yaml
+              - --no-autoupdate
+              - --metrics
+              - 0.0.0.0:8080
               - run
-              - "$(TUNNEL_ID)"
             env:
-              NO_AUTOUPDATE: "true"
-              TUNNEL_CRED_FILE: /etc/cloudflared/creds/credentials.json
-              TUNNEL_METRICS: 0.0.0.0:8080
+              - name: TUNNEL_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflared-secret
+                    key: tunnel_token
             probes:
               liveness:
                 enabled: true
@@ -93,19 +96,3 @@ spec:
         ports:
           http:
             port: 8080
-
-    persistence:
-      config:
-        type: configMap
-        name: cloudflared-configmap
-        globalMounts:
-          - path: /etc/cloudflared/config/config.yaml
-            subPath: config.yaml
-            readOnly: true
-      creds:
-        type: secret
-        name: cloudflared-secret
-        globalMounts:
-          - path: /etc/cloudflared/creds/credentials.json
-            subPath: credentials.json
-            readOnly: true
