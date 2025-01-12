@@ -1,0 +1,46 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cloudnative-pg-cluster
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+  instances: 1
+
+  storage:
+    size: 5Gi
+
+  resources:
+    requests:
+      memory: 384Mi
+      cpu: 1
+    limits:
+      memory: 384Mi
+      cpu: 1
+
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: pg-superuser-secret
+
+  postgresql:
+    parameters:
+      shared_buffers: "96MB"
+
+  env:
+  - name: TZ
+    value: America/Toronto
+
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://kreigan-postgresql/backups/
+      endpointURL: https://s3.us-east-005.backblazeb2.com
+      data:
+        compression: &compression bzip2
+      wal:
+        compression: *compression
+      s3Credentials:
+        accessKeyId:
+          name: &backup-secret backblaze-pg-backup-secret
+          key: accessKeyId
+        secretAccessKey:
+          name: *backup-secret
+          key: secretAccessKey
