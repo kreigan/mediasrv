@@ -1,0 +1,33 @@
+---
+serviceAccount:
+  create: true
+
+isClusterService: false
+
+serviceType: LoadBalancer
+service:
+  name: local-dns
+  annotations:
+    lbipam.cilium.io/ips: "192.168.21.173"
+
+servers:
+  - zones:
+      - zone: kreigan.com.
+        use_tcp: true
+    plugins:
+      - name: log
+        configBlock: |-
+          class error
+      - name: forward
+        parameters: . tls://1.1.1.1 tls://1.0.0.1
+        configBlock: |-
+          tls_servername cloudflare-dns.com
+          except kreigan.com
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 64Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

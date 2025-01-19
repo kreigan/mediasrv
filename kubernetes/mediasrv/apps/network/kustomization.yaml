@@ -7,5 +7,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./cloudflared/app.yaml
+  - ./local-dns/app.yaml
   - ./external-dns/app.yaml
   - ./ingress-nginx/app.yaml
